@@ -20,27 +20,27 @@
     <ClCompile Include="main.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="MetricsProcessor.cpp">
+    <ClCompile Include="src\AlertManager.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="HttpServer.cpp">
+    <ClCompile Include="src\HttpServer.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="AlertManager.cpp">
+    <ClCompile Include="src\MetricsProcessor.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MetricsProcessor.h">
+    <ClInclude Include="src\AlertManager.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="HttpServer.h">
+    <ClInclude Include="src\HttpServer.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="AlertManager.h">
+    <ClInclude Include="src\MetricsProcessor.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="Config.h">
+    <ClInclude Include="src\Config.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

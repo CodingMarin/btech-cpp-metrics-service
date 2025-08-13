@@ -19,16 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AlertManager.cpp" />
-    <ClCompile Include="HttpServer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MetricsProcessor.cpp" />
+    <ClCompile Include="src\AlertManager.cpp" />
+    <ClCompile Include="src\HttpServer.cpp" />
+    <ClCompile Include="src\MetricsProcessor.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AlertManager.h" />
-    <ClInclude Include="Config.h" />
-    <ClInclude Include="HttpServer.h" />
-    <ClInclude Include="MetricsProcessor.h" />
+    <ClInclude Include="src\AlertManager.h" />
+    <ClInclude Include="src\Config.h" />
+    <ClInclude Include="src\HttpServer.h" />
+    <ClInclude Include="src\MetricsProcessor.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config.json" />

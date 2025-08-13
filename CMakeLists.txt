@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(httplib CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
-find_package(redis-plus-plus CONFIG REQUIRED)
+find_package(redis++ CONFIG REQUIRED)
 
 add_executable(MetricsService
     src/main.cpp
@@ -18,11 +18,11 @@ add_executable(MetricsService
 
 target_include_directories(MetricsService PRIVATE src)
 
-target_link_libraries(MetricsService PRIVATE 
+target_link_libraries(MetricsService PRIVATE
     httplib::httplib
     nlohmann_json::nlohmann_json
-    spdlog::spdlog_header_only
-    redis++::redis++
+    spdlog::spdlog
+    redis++::redis++_static
 )
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")

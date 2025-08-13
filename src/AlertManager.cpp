@@ -1,4 +1,5 @@
 #include "AlertManager.h"
+#include "Config.h"
 #include <spdlog/spdlog.h>
 
 AlertManager::AlertManager(std::shared_ptr<MetricsProcessor> processor)
@@ -7,35 +8,28 @@ AlertManager::AlertManager(std::shared_ptr<MetricsProcessor> processor)
 }
 
 void AlertManager::setup_default_alerts() {
-    // Alerta por latencia alta
     metrics_processor->add_alert_handler([this](const Metric& metric) {
-        if (metric.duration_ms > 5000) {
-            log_alert(metric);
-            // Aquí podrías agregar Slack/Email
-            // send_slack_alert(metric);
-        }
-        });
+        log_alert(metric);
 
-    spdlog::info("Alert manager configured with default alerts");
+        // AquÃ­ puedes agregar mÃ¡s tipos de alertas
+        // send_slack_alert(metric);
+        // send_email_alert(metric);
+    });
+
+    spdlog::info("Alert handlers configured");
 }
 
 void AlertManager::log_alert(const Metric& metric) {
-    spdlog::critical("ALERT: High latency detected");
-    spdlog::critical("   Endpoint: {} {}", metric.method, metric.endpoint);
-    spdlog::critical("   Duration: {}ms", metric.duration_ms);
-    spdlog::critical("   Status: {}", metric.status);
-    spdlog::critical("   Service: {}", metric.service_name);
-    spdlog::critical("   Trace ID: {}", metric.trace_id);
+    spdlog::warn("ALERT: High latency detected - Endpoint: {} {}ms - Status: {}", 
+                 metric.endpoint, metric.duration_ms, metric.status);
 }
 
 void AlertManager::send_slack_alert(const Metric& metric) {
-    // TODO: Implementar integración con Slack
-    spdlog::info("Would send Slack alert for: {} {}ms",
-        metric.endpoint, metric.duration_ms);
+    // ImplementaciÃ³n de alerta Slack
+    spdlog::info("Would send Slack alert for endpoint: {}", metric.endpoint);
 }
 
 void AlertManager::send_email_alert(const Metric& metric) {
-    // TODO: Implementar integración con email
-    spdlog::info("Would send email alert for: {} {}ms",
-        metric.endpoint, metric.duration_ms);
+    // ImplementaciÃ³n de alerta por email
+    spdlog::info("Would send email alert for endpoint: {}", metric.endpoint);
 }
