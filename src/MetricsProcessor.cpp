@@ -101,6 +101,68 @@ nlohmann::json MetricsProcessor::get_realtime_metrics() {
     return result;
 }
 
+nlohmann::json MetricsProcessor::get_endpoint_metrics(const std::string& endpoint) {
+    nlohmann::json result;
+
+    std::lock_guard<std::mutex> lock(stats_mutex);
+
+    auto it = endpoint_stats.find(endpoint);
+    if (it != endpoint_stats.end()) {
+        auto& stats = it->second;
+
+        result = {
+            {"endpoint", endpoint},
+            {"request_count", stats->request_count.load()},
+            {"error_count", stats->error_count.load()},
+            {"success_count", stats->success_count.load()}
+        };
+
+        auto error_rate = stats->request_count > 0 ?
+            static_cast<double>(stats->error_count) / stats->request_count * 100 : 0.0;
+        result["error_rate"] = error_rate;
+
+        auto buffer_size = stats->latency_buffer->size();
+        if (buffer_size > 0) {
+            result["latency"] = {
+                {"count", buffer_size},
+                {"avg", stats->latency_buffer->average()},
+                {"p50", stats->latency_buffer->percentile(0.5)},
+                {"p95", stats->latency_buffer->percentile(0.95)},
+                {"p99", stats->latency_buffer->percentile(0.99)}
+            };
+        }
+        else {
+            result["latency"] = nullptr;
+        }
+
+        auto last_request_ago = std::chrono::duration_cast<std::chrono::seconds>(
+            std::chrono::steady_clock::now() - stats->last_request).count();
+        result["last_request_seconds_ago"] = last_request_ago;
+    }
+    else {
+        nlohmann::json similar_endpoints = nlohmann::json::array();
+
+        for (const auto& [key, stats] : endpoint_stats) {
+            if (key.find(endpoint) != std::string::npos) {
+                similar_endpoints.push_back({
+                    {"endpoint", key},
+                    {"request_count", stats->request_count.load()},
+                    {"error_count", stats->error_count.load()}
+                    });
+            }
+        }
+
+        result = {
+            {"endpoint", endpoint},
+            {"found", false},
+            {"message", "Endpoint not found"},
+            {"similar_endpoints", similar_endpoints}
+        };
+    }
+
+    return result;
+}
+
 nlohmann::json MetricsProcessor::get_system_health() {
     nlohmann::json health;
 
@@ -136,9 +198,8 @@ nlohmann::json MetricsProcessor::get_system_health() {
 }
 
 bool MetricsProcessor::is_anomaly(const Metric& metric) {
-    if (metric.duration_ms > g_config.alert_threshold_ms) {
+    if (metric.duration_ms > static_cast<uint64_t>(g_config.alert_threshold_ms))
         return true;
-    }
 
     std::string key = make_endpoint_key(metric.method, metric.endpoint);
     std::lock_guard<std::mutex> lock(stats_mutex);
