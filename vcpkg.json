@@ -1,0 +1,6 @@
+{
+  "name": "metrics-service",
+  "version": "1.0.0",
+  "description": "Real-time metrics processing service for microservices architecture",
+  "dependencies": ["httplib", "nlohmann-json", "redis-plus-plus", "spdlog"]
+}

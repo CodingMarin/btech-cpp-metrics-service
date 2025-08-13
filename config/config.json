@@ -1,0 +1,27 @@
+{
+  "server": {
+    "port": 8080,
+    "threads": 4
+  },
+  "redis": {
+    "host": "redis",
+    "port": 6379,
+    "timeout_ms": 5000
+  },
+  "metrics": {
+    "buffer_size": 10000,
+    "retention_minutes": 60
+  },
+  "alerts": {
+    "enabled": true,
+    "latency_threshold_ms": 5000,
+    "error_rate_threshold": 10.0,
+    "slack_webhook": "",
+    "email_smtp": {
+      "server": "",
+      "port": 587,
+      "username": "",
+      "password": ""
+    }
+  }
+}

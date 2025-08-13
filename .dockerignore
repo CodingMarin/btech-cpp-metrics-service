@@ -1,0 +1,12 @@
+.git
+.gitignore
+README.md
+Dockerfile
+.dockerignore
+*.md
+.vs
+.vscode
+build/
+bin/
+obj/
+*.log
